@@ -1,14 +1,9 @@
 package us.dit.fs;
 
 import java.time.*; // Este paquete contiene LocalDate, LocalTime y LocalDateTime.
-import java.time.format.*;  // Este paquete contiene DateTimeFormatter.
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import java.util.Set;
-
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class GestorUsuariosTest {
