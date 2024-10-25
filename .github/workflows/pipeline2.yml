@@ -1,0 +1,38 @@
+name: Pipeline para rama main tercera convocatoria josbragar
+on:
+  push:
+    branches:
+      - 'main'
+  workflow_dispatch: #en pestaña de actions va a salir un boton para correr el pipeline manualmente
+jobs:
+  Test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clonando el repositorio y estableciendo el espacio de trabajo
+        uses: actions/checkout@v3
+      - name: Configurando java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '21' #Versión con la que haya creado el proyecto
+      - name: Ejecutar los test
+        run: |
+          chmod +x gradlew 
+          ./gradlew test
+  Publish:
+    runs-on: ubuntu-latest
+    needs: Test
+    env:
+      GITHUB_LOGIN: ${{ github.token }}
+    steps:
+      - name: Clonando el repositorio y estableciendo el espacio de trabajo
+        uses: actions/checkout@v3
+      - name: Configurando java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+      - name: Publicando el artefacto
+        run: |
+          chmod +x gradlew        
+          ./gradlew publish
