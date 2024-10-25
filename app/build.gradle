@@ -7,12 +7,41 @@
 
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
-    id 'application'
+    id 'application' //No lo cuestionamos es de gradle
+    id 'java' //Pluguin de java
+    id 'maven-publish' //Para operaciones en el repositorio de maven
 }
 
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/josbragar/TerceraConvocatoria")
+            credentials {
+                //las propiedades gpr.user y gpr.key están configuradas en gradle.properties en el raiz del proyecto, y se añade a .gitignore para que no se suban
+                //O bien configuro las variables de entorno GITHUB_LOGIN y GITHUB_PACKAGES
+                username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_LOGIN")
+                password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_LOGIN")
+            }
+        }
+    }
+    publications {
+        gpr(MavenPublication) {
+            //Del tutorial https://docs.gradle.org/current/userguide/publishing_maven.html#publishing_maven
+
+            groupId = 'TerceraConvocatoria'
+            artifactId = 'TerceraConvocatoria'
+            version = '0.0'
+
+            from components.java
+        }
+
+    }
 }
 
 dependencies {
